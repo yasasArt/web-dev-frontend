@@ -7,6 +7,7 @@ import HomePage from './pages/homePage'
 import LoginPage from './pages/loginpage'
 import RegisterPage from './pages/registerpage'
 import AdminPage from './pages/adminPage'
+import TestPage from './pages/test'
 
 //import ProductCard from './components/productCard'
 
@@ -16,10 +17,11 @@ function App() {
     <BrowserRouter>
       <div className='w-full h-screen bg-accent text-secondary'>
         <Routes path="/">
-          <Route path='/' element={<HomePage/>} />
+          <Route path='/*' element={<HomePage/>} />
           <Route path='/login' element={<LoginPage/>} />
           <Route path='/register' element={<RegisterPage/>} />
           <Route path='/admin/*' element={<AdminPage/>} />
+          <Route path='/test' element={<TestPage/>} />
         </Routes>
       </div>
     </BrowserRouter>

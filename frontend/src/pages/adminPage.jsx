@@ -1,5 +1,9 @@
 import React from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
+import { LuClipboardList } from "react-icons/lu";
+import { LuBoxes } from "react-icons/lu";
+import { FiUsers } from "react-icons/fi";
+import { MdOutlineRateReview } from "react-icons/md";
 
 const AdminPage = () => {
   return (
@@ -12,10 +16,10 @@ const AdminPage = () => {
         </div>
 
         <div className='w-full h-[400px] text-white flex flex-col gap-5 text-2xl'>
-          <Link to="/admin">Orders</Link>
-          <Link to="/admin/products">Products</Link>
-          <Link to="/admin/users">Users</Link>
-          <Link to="/admin/reviews">Reviews</Link>
+          <Link to="/admin" className='w-full flex items-center h-[50px] gap-[10px]'> <LuClipboardList /> Orders</Link>
+          <Link to="/admin/products" className='w-full flex items-center h-[50px] gap-[10px]'> <LuBoxes /> Products</Link>
+          <Link to="/admin/users" className='w-full flex items-center h-[50px] gap-[10px]'><FiUsers /> Users</Link>
+          <Link to="/admin/reviews" className='w-full flex items-center h-[50px] gap-[10px]'><MdOutlineRateReview /> Reviews</Link>
         </div>
 
       </div>
