@@ -1,13 +1,21 @@
 import React from 'react'
 import Header from '../components/header'
+import { Route, Routes } from 'react-router-dom'
+
 
 const HomePage = () => {
   return (
-    <div className='w-full f-full'>
+    <div className='w-full f-full overflow-y-scroll max-h-full'>
         <Header/>
-        <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam 
-                sit perferendis quidem neque itaque assumenda atque iusto ut molestias 
-                quos porro eos aperiam corporis aspernatur vero, nisi iste vel et?</h1>
+        <div className="w-full min-h-[calc(100%-100px)]">
+          <Routes>
+                <Route path='/' element={<h1>Home Page</h1>}/>
+                <Route path='/products' element={<h1>Products Page</h1>} />
+                <Route path='/about' element={<h1>About Page</h1>} />
+                <Route path='/contact' element={<h1>Contact Page</h1>} />
+                <Route path='/*' element={<h1>Not found</h1>}/>
+          </Routes>
+        </div>
     </div>
   )
 }

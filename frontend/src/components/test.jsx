@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Test() {
+export default function test() {
 
     const [count , setCount ] = useState(0)
     const [status , setStatus] = useState("Hello")
