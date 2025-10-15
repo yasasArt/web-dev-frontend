@@ -18,10 +18,12 @@ export default function test() {
                 <h1 className="w-[100px] h-[50px] text-[30px]">{count}</h1>
 
                 <button onClick={()=>{
+
                     setCount(count + 1)
                 }} 
                 className="w-[100px] h-[50px] bg-blue-600 text-white">
                     Increment
+                    
                 </button>
 
             </div>
