@@ -1,9 +1,60 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   return (
-    <div>Loginpage</div>
-  )
-}
+    <div className="w-full h-screen bg-[url('/Bg.jpg')] bg-center bg-cover bg-no-repeat flex">
+      <div className="w-[50%] h-full flex justify-center items-center flex-col p-[50px]">
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className="w-[150px] h-[150px] mb-[20px] object-cover"
+        />
 
-export default LoginPage
+        <h1 className="text-[50px] text-MainText text-shadow-secondary text-shadow-2xs text-center font-bold">
+          Pug In. Power Up. Play Hard.
+        </h1>
+        <p className="text-[20px] text-secondary mt-[20px] mb-[40px] italic text-center">
+          Join the ultimate gaming community. Log in to access exclusive
+          features.
+        </p>
+      </div>
+      <div className="w-[50%] h-full flex justify-center items-center">
+        <div className="w-[450px] h-[600px] backdrop-blur-2xl shadow-2xl rounded-2xl flex flex-col justify-center items-center ">
+          <h1 className="text-[40px] font-bold mb-[20px] text-white text-shadow-white">
+            {" "}
+            Login
+          </h1>
+          <input
+            type="email"
+            placeholder="your email"
+            className="w-[400px] h-[50px] mb-[20px] rounded-lg border border-secondary p-[10px] text-[20px] focus:outline-none focus:ring-2 focus:ring-MainText"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-[400px] h-[50px] mb-[20px] rounded-lg border border-secondary p-[10px] text-[20px] focus:outline-none focus:ring-2 focus:ring-MainText"
+          />
+          <p className="text-white not-italic w-full mb-[20px] text-center">
+            Forget your Password?
+            <Link to="forgot-password" className="text-MainText italic">
+                Reset it here
+            </Link>
+
+          </p>
+          <button className="w-[400px] h-[50px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary ">
+            Login
+          </button>
+          <p className="text-white not-italic text-center">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-MainText italic">
+              Register here
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
