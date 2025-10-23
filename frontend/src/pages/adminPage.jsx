@@ -4,6 +4,9 @@ import { LuClipboardList } from "react-icons/lu";
 import { LuBoxes } from "react-icons/lu";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineRateReview } from "react-icons/md";
+import AdminProductsPage from './admin/adminProductsPage';
+import AdminAddProductPage from './admin/adminAddProductPage';
+
 
 const AdminPage = () => {
   return (
@@ -12,10 +15,10 @@ const AdminPage = () => {
 
         <div className='w-full h-[100px] flex text-white items-center '>
           <img src="/logo.png" alt="logo" className='h-full' />
-          <h1 className='text-2xl'> Admin </h1>
+          <h1 className='text-2xl pl-[30px]'> Admin </h1> {/* pl = padding left */}
         </div>
 
-        <div className='w-full h-[400px] text-white flex flex-col gap-5 text-2xl'>
+        <div className='w-full h-[400px] text-white flex flex-col gap-5 text-2xl pl-[20px] pt-[20px]'>
           <Link to="/admin" className='w-full flex items-center h-[50px] gap-[10px]'> <LuClipboardList /> Orders</Link>
           <Link to="/admin/products" className='w-full flex items-center h-[50px] gap-[10px]'> <LuBoxes /> Products</Link>
           <Link to="/admin/users" className='w-full flex items-center h-[50px] gap-[10px]'><FiUsers /> Users</Link>
@@ -28,7 +31,8 @@ const AdminPage = () => {
         {/* path eka dnnma one neh */}
          <Routes path="/"> 
               <Route path='/' element={<h1>Orders</h1>} />
-              <Route path='/products' element={<h1>product</h1>} />
+              <Route path='/products' element={<AdminProductsPage/>} />
+              <Route path='/add-product' element={<AdminAddProductPage/>} />
               <Route path='/users' element={<h1>users</h1>} />
               <Route path='/reviews' element={<h1>Reviews</h1>} />
          </Routes>
