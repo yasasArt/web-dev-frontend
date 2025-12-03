@@ -1,34 +1,42 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { BiPlus } from "react-icons/bi";
 import axios from "axios";
+import Loader from '../../components/loader';
 
 const AdminProductsPage = () => {
 
   const [products, setProducts] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    axios.get(import.meta.env.VITE_BACKEND_URL + '/products')
+    if (!loaded) {
+    axios
+      .get(import.meta.env.VITE_BACKEND_URL + '/products')
       .then((response) => {
         console.log(response.data);
         setProducts(response.data);
+        setLoaded(true);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
-  }, []);
+    }
+  }, [loaded]);
+
 
   return (
     <div className='w-full h-full flex flex-col items-center px-6 py-10 bg-primary text-secondary'>
 
-      <div className="w-full max-w-6xl bg-white shadow-xl rounded-2xl overflow-hidden border border-neutral-200">
+      <div className="w-full h-full-6xl bg-white shadow-xl rounded-2xl overflow-hidden border border-neutral-200">
         
         <div className="p-5 bg-secondary">
           <h1 className="text-2xl font-semibold text-accent">Product Inventory</h1>
         </div>
 
         <div className="overflow-auto max-h-[75vh]">
-          <table className="w-full border-collapse">
+          {loaded ? <table className="w-full border-collapse">
             <thead className="bg-accent text-secondary sticky top-0 shadow">
               <tr>
                 <th className="p-4 text-left">Image</th>
@@ -73,14 +81,33 @@ const AdminProductsPage = () => {
                     </td>
                     <td className='"p-4 text-left"'>
                       <div className='inline-flex items-center gap-2 '>
-                      <button className='w-[100px] bg-red-400 flex justify-center items-center text-white p-2 rounded-lg cursor-pointer hover:bg-red-600'>Delete</button>
+                      <button onClick={
+                        () => {
+                           const token = localStorage.getItem('token');
+                            axios.delete(import.meta.env.VITE_BACKEND_URL + "/products/" + item.productID , {
+                              headers: {
+                                Authorization: `Bearer ${token}`
+                              }
+                            }).then(
+                              () => {
+                                toast.success("Product deleted successfully");
+                                setLoaded(false);
+                              }
+                            )
+                          }
+                      }
+                      className='w-[100px] bg-red-400 flex justify-center items-center text-white p-2 rounded-lg cursor-pointer hover:bg-red-600'>Delete</button>
                       </div>
                     </td>
                   </tr>
                 );
               })}
             </tbody>
-          </table>
+          </table>:<Loader/>
+          // <div className="w-full h-screen fixed top-0 left-0 bg-black/45 flex justify-center items-center">
+          //          <div className="w-[100px] h-[100px] border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+          //     </div>  <-- Loader Component replaced this block -->
+            }
         </div>
 
       </div>
