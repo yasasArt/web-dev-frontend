@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { BiPlus } from "react-icons/bi";
 import axios from "axios";
 import Loader from '../../components/loader';
+import ProductDeleteButton from '../../components/ProductDeleteButton';
 
 const AdminProductsPage = () => {
 
@@ -81,22 +82,7 @@ const AdminProductsPage = () => {
                     </td>
                     <td className='"p-4 text-left"'>
                       <div className='inline-flex items-center gap-2 '>
-                      <button onClick={
-                        () => {
-                           const token = localStorage.getItem('token');
-                            axios.delete(import.meta.env.VITE_BACKEND_URL + "/products/" + item.productID , {
-                              headers: {
-                                Authorization: `Bearer ${token}`
-                              }
-                            }).then(
-                              () => {
-                                toast.success("Product deleted successfully");
-                                setLoaded(false);
-                              }
-                            )
-                          }
-                      }
-                      className='w-[100px] bg-red-400 flex justify-center items-center text-white p-2 rounded-lg cursor-pointer hover:bg-red-600'>Delete</button>
+                      <ProductDeleteButton productID = {item.productID} reload={()=>{setLoaded(false)}}/>
                       </div>
                     </td>
                   </tr>
