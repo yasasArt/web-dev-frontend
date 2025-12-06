@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { AiOutlineProduct } from "react-icons/ai";
 import axios from "axios";
 import toast from "react-hot-toast";
+import uploadFile  from '../../utils/mediaUpload.js';
+
 
 const AdminAddProductPage = () => {
     const [productID, setProductID] = useState("");
@@ -13,6 +15,7 @@ const AdminAddProductPage = () => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
     const [labelledPrice, setLabelledPrice] = useState(0);
+    const [files, setFiles] = useState([]);
     const [images, setImages] = useState("");
     const [category, setCategory] = useState("");
     const [brand, setBrand] = useState("");
@@ -25,11 +28,33 @@ const AdminAddProductPage = () => {
     async function addProduct() {
         const token = localStorage.getItem("token");
         
-        if (!token) {
+        if (token == null) {
             toast.error("You are not authorized to add products");
             navigate("/login");
             return;
+        } 
+        
+        console.log(files);// Upload images and get their URLs
+
+        if (!files || files.length === 0) {
+            toast.error("No files selected");
+            return;
         }
+
+        const imagePromises =[];
+
+        for(let i=0; i<files.length; i++){
+             const Promise = uploadFile(files[i]); //pinture upload krla upload krala url ekk dennm kiyla promise ekak denwa.
+            imagePromises.push(Promise);//me code eka run wela iwra weddi imagePromises array eka atule promise godak tiynw.
+        }
+        const images = await Promise.all(imagePromises).catch((error)=>{ //mehemai meka use krnne me array eke thyna promise tika iwra wela complete wela thyna url tika ganna.
+            toast.error("Error uploading images");
+            console.log("Error uploading images:");
+            console.log(error);
+            return;
+        });
+
+       
 
         // Validation
         if (!productID || !name || !description || !price || !category || !brand || !model || stock === "") {
@@ -37,12 +62,40 @@ const AdminAddProductPage = () => {
             return;
         }
 
+        // try{
+        //     const altNamesInArray = altNames.split(",")
+        //     await axios.post(import.meta.env.VITE_BACKEND_URL + "/products/", {
+        //          productID: productID,
+        //         name: name,
+        //         altName: altNamesInArray,
+        //         description: description,
+        //         price: Number(price),
+        //         labelledPrice:labelledPrice,
+        //         images: images,
+        //         category: category,
+        //         brand: brand,
+        //         model: model,
+        //         stock: Number(stock),
+        //         isAvailable: isAvailable
+        //     }, {
+        //         headers: {
+        //             Authorization: "Bearer " + token,
+        //         }
+        //     });
+        //     toast.success("Product added successfully");
+        //     navigate("/admin/products");
+        // }catch(error){
+        //     toast.error("Error adding product");
+        //     console.log("Error adding product:");
+        //     console.log(error);
+
+        // }
+
         setLoading(true);
 
         try {
             const altNamesInArray = altName ? altName.split(",").map(item => item.trim()) : [];
-            const imagesInArray = images ? images.split(",").map(item => item.trim()) : [];
-
+           
             const productData = {
                 productID: productID,
                 name: name,
@@ -50,7 +103,7 @@ const AdminAddProductPage = () => {
                 description: description,
                 price: Number(price),
                 labelledPrice:labelledPrice,
-                images: imagesInArray,
+                images: images,
                 category: category,
                 brand: brand,
                 model: model,
@@ -155,9 +208,11 @@ const AdminAddProductPage = () => {
                     <div className='my-[20px] w-full'>
                         <label>Images</label>
                         <input 
-                            type="text" 
-                            value={images} 
-                            onChange={(e) => setImages(e.target.value)} 
+                            type="file" 
+                            multiple = {true} // Allow multiple file selection "file kamathi gank upload krnn puluwn"
+                            onChange={(e) => {
+                                setFiles(e.target.files);
+                            }} 
                             className='w-full h-[50px] rounded-2xl focus:outline-none focus:ring-2 focus:ring-secondary border border-secondary shadow-2xl px-[20px]'
                         />
                         <p className='text-sm text-gray-500 w-full text-right'>Separate image URLs with commas</p>
