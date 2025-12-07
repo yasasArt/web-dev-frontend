@@ -7,7 +7,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import uploadFile  from '../../utils/mediaUpload.js';
 
-
 const AdminUpdateProductPage = () => {
     const location = useLocation();
     const [productID, setProductID] = useState(location.state.productID);  
@@ -21,13 +20,15 @@ const AdminUpdateProductPage = () => {
     const [brand, setBrand] = useState(location.state.brand);
     const [model, setModel] = useState(location.state.model);
     const [stock, setStock] = useState(location.state.stock);
-    const [isAvailable, setIsAvailable] = useState(false);
+    const [isAvailable, setIsAvailable] = useState(location.state.isAvailable);
     const [loading, setLoading] = useState(false);
+    
     const navigate = useNavigate();
 
-    if(!location.state){
+      if (!location.state) {
         window.location.href = "/admin/products";
     }
+
 
     async function UpdateProduct() {
         const token = localStorage.getItem("token");
@@ -89,7 +90,8 @@ const AdminUpdateProductPage = () => {
             console.log("Sending product data:", productData);
 
             const response = await axios.put(
-                import.meta.env.VITE_BACKEND_URL + "/products/" + productID,productData,
+                import.meta.env.VITE_BACKEND_URL + "/products/" + productID,
+                productData,
                 {
                     headers: {
                         Authorization: "Bearer " + token,
@@ -107,7 +109,9 @@ const AdminUpdateProductPage = () => {
              toast.error("Error update product");
             console.log("Error update product:");
             console.log(error);
-        } 
+        }  finally {
+            setLoading(false);
+        }
     }
 
     return (
