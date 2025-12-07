@@ -82,6 +82,11 @@ const AdminProductsPage = () => {
                     </td>
                     <td className='"p-4 text-left"'>
                       <div className='inline-flex items-center gap-2 '>
+                        <Link
+                          to="/admin/update-product"
+                          className='px-3 py-2 rounded-md w-[70px] text-center bg-secondary/20 text-secondary'
+                          state={item}
+                          >Edit</Link>
                       <ProductDeleteButton productID = {item.productID} reload={()=>{setLoaded(false)}}/>
                       </div>
                     </td>

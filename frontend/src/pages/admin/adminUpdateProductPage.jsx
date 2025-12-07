@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AiOutlineProduct } from "react-icons/ai";
 import axios from "axios";
@@ -8,23 +8,28 @@ import toast from "react-hot-toast";
 import uploadFile  from '../../utils/mediaUpload.js';
 
 
-const AdminAddProductPage = () => {
-    const [productID, setProductID] = useState("");
-    const [name, setName] = useState("");
-    const [altName, setAltName] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState(0);
-    const [labelledPrice, setLabelledPrice] = useState(0);
+const AdminUpdateProductPage = () => {
+    const location = useLocation();
+    const [productID, setProductID] = useState(location.state.productID);  
+    const [name, setName] = useState(location.state.name);
+    const [altName, setAltName] = useState(location.state.altNames.join(", "));
+    const [description, setDescription] = useState(location.state.description);
+    const [price, setPrice] = useState(location.state.price);
+    const [labelledPrice, setLabelledPrice] = useState(location.state.labelledPrice);
     const [files, setFiles] = useState([]);
-    const [category, setCategory] = useState("");
-    const [brand, setBrand] = useState("");
-    const [model, setModel] = useState("");
-    const [stock, setStock] = useState(0);
+    const [category, setCategory] = useState(location.state.category);
+    const [brand, setBrand] = useState(location.state.brand);
+    const [model, setModel] = useState(location.state.model);
+    const [stock, setStock] = useState(location.state.stock);
     const [isAvailable, setIsAvailable] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    async function addProduct() {
+    if(!location.state){
+        window.location.href = "/admin/products";
+    }
+
+    async function UpdateProduct() {
         const token = localStorage.getItem("token");
         
         if (token == null) {
@@ -33,7 +38,6 @@ const AdminAddProductPage = () => {
             return;
         } 
         
-        console.log(files);// Upload images and get their URLs
 
         if (!files || files.length === 0) {
             toast.error("No files selected");
@@ -46,13 +50,15 @@ const AdminAddProductPage = () => {
              const Promise = uploadFile(files[i]); //pinture upload krla upload krala url ekk dennm kiyla promise ekak denwa.
             imagePromises.push(Promise);//me code eka run wela iwra weddi imagePromises array eka atule promise godak tiynw.
         }
-        const images = await Promise.all(imagePromises).catch((error)=>{ //mehemai meka use krnne me array eke thyna promise tika iwra wela complete wela thyna url tika ganna.
+        let images = await Promise.all(imagePromises).catch((error)=>{ //mehemai meka use krnne me array eke thyna promise tika iwra wela complete wela thyna url tika ganna.
             toast.error("Error uploading images");
             console.log("Error uploading images:");
             console.log(error);
             return;
         });
-
+        if(images.length == 0){
+            images = location.state.images;
+        }
        
 
         // Validation
@@ -61,42 +67,12 @@ const AdminAddProductPage = () => {
             return;
         }
 
-        // try{
-        //     const altNamesInArray = altNames.split(",")
-        //     await axios.post(import.meta.env.VITE_BACKEND_URL + "/products/", {
-        //          productID: productID,
-        //         name: name,
-        //         altName: altNamesInArray,
-        //         description: description,
-        //         price: Number(price),
-        //         labelledPrice:labelledPrice,
-        //         images: images,
-        //         category: category,
-        //         brand: brand,
-        //         model: model,
-        //         stock: Number(stock),
-        //         isAvailable: isAvailable
-        //     }, {
-        //         headers: {
-        //             Authorization: "Bearer " + token,
-        //         }
-        //     });
-        //     toast.success("Product added successfully");
-        //     navigate("/admin/products");
-        // }catch(error){
-        //     toast.error("Error adding product");
-        //     console.log("Error adding product:");
-        //     console.log(error);
-
-        // }
-
         setLoading(true);
 
         try {
             const altNamesInArray = altName ? altName.split(",").map(item => item.trim()) : [];
            
             const productData = {
-                productID: productID,
                 name: name,
                 altName: altNamesInArray,
                 description: description,
@@ -112,9 +88,8 @@ const AdminAddProductPage = () => {
 
             console.log("Sending product data:", productData);
 
-            const response = await axios.post(
-                import.meta.env.VITE_BACKEND_URL + "/products/",
-                productData,
+            const response = await axios.put(
+                import.meta.env.VITE_BACKEND_URL + "/products/" + productID,productData,
                 {
                     headers: {
                         Authorization: "Bearer " + token,
@@ -123,14 +98,14 @@ const AdminAddProductPage = () => {
                 }
             );
 
-            console.log("Product added successfully:", response.data);
-            toast.success("Product added successfully");
+            console.log("Product updated successfully:", response.data);
+            toast.success("Product updated successfully");
             navigate("/admin/products");
             
 
         } catch (error) {
-             toast.error("Error adding product");
-            console.log("Error adding product:");
+             toast.error("Error update product");
+            console.log("Error update product:");
             console.log(error);
         } 
     }
@@ -139,13 +114,14 @@ const AdminAddProductPage = () => {
         <div className='w-full h-full flex justify-center p-[50px] items-start overflow-y-scroll'>
             <div className=' bg-MainText/50 rounded-2xl p-[40px] w-[800px] shadow-2xl overflow-y-visible'>
                 <h1 className='w-full text-3xl font-bold mb-[20px] flex items-center gap-[5px]'> 
-                    <AiOutlineProduct />Add New Product
+                    <AiOutlineProduct /> Update Product
                 </h1>
                 <div className='w-full bg-accent p-[20px] text-2xl flex flex-row flex-wrap justify-between rounded-xl'>
                    
                     <div className='my-[20px] w-[40%]'>
                         <label>Product ID *</label>
                         <input 
+                            disabled={true} // Product ID eka update krnnd be.
                             type="text" 
                             value={productID} 
                             onChange={(e) => setProductID(e.target.value)} 
@@ -287,11 +263,11 @@ const AdminAddProductPage = () => {
                     </Link>
                     
                     <button 
-                        onClick={addProduct} 
+                        onClick={UpdateProduct} 
                         disabled={loading}
                         className='w-[49%] h-[60px] bg-MainText text-white font-bold text-2xl rounded-2xl mt-[20px] hover:bg-black hover:text-accent border-2 border-accent flex justify-center items-center disabled:opacity-50'
                     >
-                        {loading ? "Adding..." : "Add Product"}
+                        {"Update Product"}
                     </button>
                 </div> 
             </div>
@@ -299,4 +275,4 @@ const AdminAddProductPage = () => {
     )
 }
 
-export default AdminAddProductPage;
+export default AdminUpdateProductPage;
