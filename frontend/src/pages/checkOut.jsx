@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { BiSolidChevronUp } from "react-icons/bi";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getCart, addToCart } from "../utils/cart"; 
-import { Link } from "react-router-dom";
-import { getCartTotal } from "../utils/cart";
 
+export default function CheckoutPage() {
+    const location = useLocation();
+    const navigate = useNavigate();
 
-export default function CartPage() {
     const [cart, setCart] = useState(getCart());
+
+    if(location.state == null){
+        navigate("/products");
+    }
     
     // Create a handler function to ensure proper item format
     const handleQuantityChange = (item, change) => {
@@ -30,7 +35,7 @@ export default function CartPage() {
                     Your cart is empty
                 </div>
             ) : (
-                cart.map((item) => (
+                cart.map((item, index) => (
                     <div key={item.productID} className="w-[50%] h-[175px] rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between">
                         <img src={item.image} alt={item.name} className="h-full aspect-square object-cover"/>
                         
@@ -72,36 +77,47 @@ export default function CartPage() {
                        <div className="h-full flex flex-row items-center gap-4">
                             <div className="h-full flex flex-col justify-center items-center">
                                 <BiSolidChevronUp 
-                                    onClick={() => handleQuantityChange(item, 1)}
+                                    onClick={() => {
+                                        handleQuantityChange(item, 1)
+                                        const copiedCart =[...Cart]
+                                        copiedCart[index].quantity += 1
+                                        setCart(copiedCart)
+                                    }
+                                    }
                                     className="text-3xl cursor-pointer hover:text-secondary/80 transition"
                                 />
                                 <span className="text-lg">{item.quantity}</span>
                                 <BiSolidChevronUp 
-                                    onClick={() => handleQuantityChange(item, -1)}
+                                    onClick={() => {
+                                        handleQuantityChange(item, -1)
+                                        const copiedCart =[...cart]
+                                        copiedCart[index].quantity -= 1
+                                        if(copiedCart[index].quantity < 1){
+                                            copiedCart.splice(index, 1)
+                                        }
+                                        setCart(copiedCart)
+                                    }
+                                }
                                     className="rotate-180 text-3xl cursor-pointer hover:text-secondary/80 transition"
                                 />
                             </div>
                             <div className="flex items-center pr-4">
-                                <span className="pr-4 text-lg font-semibold w-[150px] text-right">
+                                <span className="text-lg font-semibold">
                                     LKR. {(item.price * item.quantity).toFixed(2)}
                                 </span>
                             </div>
                         </div>
+                        
                     </div>
                 ))
             )}
             <div className="w-[50%] h-[150px] rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between item-center">
-                <Link
-                    to="/checkout"
-                    className="self-center ml-4 px-6 py-3 bg-secondary text-white rounded hover:bg-secondary/80 transition"
-                        state={
-                            cart
-                        }
-                    >
-                        checkout
-                </Link>
+                <button 
+                    className="self-center ml-4 px-6 py-3 bg-secondary text-white rounded hover:bg-secondary/80 transition">
+                    Order Now
+                </button>
                 <span className="pr-4 text-2xl font-semibold flex items-center">
-                    LKR. {getCartTotal().toFixed(2)}
+                    {/* LKR. {getCartTotal().toFixed(2)} */}
                 </span>
 
             </div>

@@ -51,3 +51,12 @@ export function addToCart(product, quantity){
 export function emptyCart(){
     localStorage.setItem('cart', "[]");
 }
+
+export function getCartTotal(){
+    let total = 0;
+    const cart = getCart();
+    cart.forEach((item)=>{
+        total += item.price * item.quantity;
+    });
+    return total;
+}
