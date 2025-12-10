@@ -3,6 +3,7 @@ import { BiSolidChevronUp } from "react-icons/bi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCart, addToCart } from "../utils/cart"; 
 
+
 export default function CheckoutPage() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -11,6 +12,15 @@ export default function CheckoutPage() {
 
     if(location.state == null){
         navigate("/products");
+    }
+
+    function getCartTotal(){
+        let total = 0;
+        cart.forEach((item) =>{
+            total += item.price * item.quantity
+        }
+        )
+        return total;
     }
     
     // Create a handler function to ensure proper item format
@@ -37,7 +47,7 @@ export default function CheckoutPage() {
             ) : (
                 cart.map((item, index) => (
                     <div key={item.productID} className="w-[50%] h-[175px] rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between">
-                        <img src={item.image} alt={item.name} className="h-full aspect-square object-cover"/>
+                        <img src={item.image} className="h-full aspect-square object-cover"/>
                         
                         <div className="flex flex-col justify-center pl-4 flex-1">
                             <h1 className="text-2xl font-semibold relative group">
@@ -117,7 +127,7 @@ export default function CheckoutPage() {
                     Order Now
                 </button>
                 <span className="pr-4 text-2xl font-semibold flex items-center">
-                    {/* LKR. {getCartTotal().toFixed(2)} */}
+                     LKR. {(getCartTotal() ).toFixed(2)}
                 </span>
 
             </div>

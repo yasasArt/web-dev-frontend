@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
 
-
 const imageSlider = (props) => {
      const images = props.images;//images tiyna arry eka gnnw
      const [activeIndex , setActiveIndex] = useState(0);
@@ -13,11 +12,16 @@ const imageSlider = (props) => {
                 images.map(
                     (image , index) => {
                         return(
-                        <img src={images[index]} className={'w-[90px] h-[90px] object-cover rounded-lg' +((activeIndex == index)?" border-2 border-red-500": " ")} onClick={
-                            ()=>{
-                                setActiveIndex(index);
+                        <img 
+                            key={index} // Add this line
+                            src={images[index]} 
+                            className={'w-[90px] h-[90px] object-cover rounded-lg' +((activeIndex == index)?" border-2 border-red-500": " ")} 
+                            onClick={
+                                ()=>{
+                                    setActiveIndex(index);
+                                }
                             }
-                        }/>
+                        />
                         )
                     }
                 )
@@ -28,4 +32,3 @@ const imageSlider = (props) => {
 }
 
 export default imageSlider
-
