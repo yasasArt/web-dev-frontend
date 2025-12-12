@@ -32,7 +32,7 @@ export default function CartPage() {
             ) : (
                 cart.map((item) => (
                     <div key={item.productID} className="w-[50%] h-[175px] rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between">
-                        <img src={item.image} alt={item.name} className="h-full aspect-square object-cover"/>
+                        <img src={item.image} className="h-full aspect-square object-cover"/>
                         
                         <div className="flex flex-col justify-center pl-4 flex-1">
                             <h1 className="text-2xl font-semibold relative group">
