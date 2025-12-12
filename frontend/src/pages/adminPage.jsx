@@ -7,6 +7,7 @@ import { MdOutlineRateReview } from "react-icons/md";
 import AdminProductsPage from './admin/adminProductsPage';
 import AdminAddProductPage from './admin/adminAddProductPage';
 import AdminUpdateProductPage from './admin/adminUpdateProductPage';
+import AdminOrdersPage from './admin/adminOrders';
 
 
 const AdminPage = () => {
@@ -31,7 +32,7 @@ const AdminPage = () => {
       <div className="w-[calc(100%-300px)] h-full border-[10px] bg-accent overflow-y-scroll border-secoundary rounded-2xl text-2xl">
         {/* path eka dnnma one neh */}
          <Routes path="/"> 
-              <Route path='/' element={<h1>Orders</h1>} />
+              <Route path='/' element={<h1><AdminOrdersPage/></h1>} />
               <Route path='/products' element={<AdminProductsPage/>} />
               <Route path='/add-product' element={<AdminAddProductPage/>} />
               <Route path='/update-product' element={<AdminUpdateProductPage/>} />
