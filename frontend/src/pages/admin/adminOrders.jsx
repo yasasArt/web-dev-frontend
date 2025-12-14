@@ -49,6 +49,7 @@ const AdminOrdersPage = () => {
                   <th className="p-4 text-left">Date</th>
                   <th className="p-4 text-left">Status</th>
                   <th className="p-4 text-left">Total Amount</th>
+                  <th className="p-4 text-left">Action</th>
                 </tr>
               </thead>
 
@@ -78,7 +79,7 @@ const AdminOrdersPage = () => {
                         LKR. {order.total?.toFixed(2)}
                       </td>
                       <td className="px-4 py-3 text-sm font-medium text-secondary/90">
-                        <ViewOrderInfo order={order}/>
+                        <ViewOrderInfo order = {order}/>
                       </td>
                     </tr>
                   );
