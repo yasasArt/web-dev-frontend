@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 import { LuClipboardList } from "react-icons/lu";
 import { LuBoxes } from "react-icons/lu";
@@ -8,11 +8,39 @@ import AdminProductsPage from './admin/adminProductsPage';
 import AdminAddProductPage from './admin/adminAddProductPage';
 import AdminUpdateProductPage from './admin/adminUpdateProductPage';
 import AdminOrdersPage from './admin/adminOrders';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 
 const AdminPage = () => {
+  const [user, setUser] = useState(null)
+
+  useEffect(()=> { //backend ekta call krla userge adala wistara tika genna gnnw
+    const token = localStorage.getItem  ("token")
+    if(token == null) {
+      window.location.href = "/"
+      return;
+    }
+
+    axios.get(import.meta.env.VITE_BACKEND_URL + "/users/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    }).then((response) => {
+      if(response.data.role == "admin"){ //user admin kenek newai nm home page ekta ywnw.
+        setUser(response.data);
+      }else{
+        window.location.href = "/";
+      }
+    }).catch(()=> {
+      window.location.href = "/";
+    })
+  },[])
   return (
     <div className='w-full h-full flex bg-secondary'>
+
+      <>
       <div className="w-[300px] bg-black h-full">
 
         <div className='w-full h-[100px] flex text-white items-center '>
@@ -40,7 +68,7 @@ const AdminPage = () => {
               <Route path='/reviews' element={<h1>Reviews</h1>} />
          </Routes>
       </div>
-      
+      </>  
 
     </div>
   )

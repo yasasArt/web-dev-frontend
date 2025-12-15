@@ -30,11 +30,27 @@ export default function CartPage() {
                     Your cart is empty
                 </div>
             ) : (
-                cart.map((item) => (
-                    <div key={item.productID} className="w-[50%] h-[175px] rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between">
-                        <img src={item.image} className="h-full aspect-square object-cover"/>
+                cart.map((item , index) => (
+                    <div key={index} className="w-full lg:w-[50%] lg:h-[175px] pt-[20px] relative rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between">
+                        <h1 className="lg:hidden w-full overflow-hidden h-[20px] absolute top-[0px]">{item.name}</h1>
                         
-                        <div className="flex flex-col justify-center pl-4 flex-1">
+                        <div className="h-full flex flex-col">
+                        <img src={item.image} 
+                        className="h-[80px] lg:h-full aspect-square object-cover"/>
+                           <div className=" lg:hidden mt-2">
+                                {item.labelledPrice && item.labelledPrice > item.price && (
+                                    <h2 className="text-secondary/80 line-through decoration-red-700 decoration-2 mr-2">
+                                        LKR. {item.labelledPrice.toFixed(2)}
+                                    </h2>
+                                )}
+                                <h2 className="text-xl text-black font-semibold">
+                                    LKR. {item.price.toFixed(2)}
+                                </h2>
+                            </div>
+                            
+                        </div>
+                        
+                        <div className="hidden lg:flex flex-col justify-center pl-4 flex-1">
                             <h1 className="text-2xl font-semibold relative group">
                                 <span className="opacity-0 group-hover:opacity-100 transition-opacity italic text-sm absolute -top-8 bg-gray-800 text-white px-3 py-1 rounded-full whitespace-nowrap z-10">
                                     {item.name}
@@ -55,7 +71,7 @@ export default function CartPage() {
                                 </p>
                             )}
                             
-                            <div className="flex items-center mt-2">
+                            <div className="items-center mt-2">
                                 {item.labelledPrice && item.labelledPrice > item.price && (
                                     <h2 className="text-secondary/80 line-through decoration-red-700 decoration-2 mr-2">
                                         LKR. {item.labelledPrice.toFixed(2)}
@@ -69,7 +85,7 @@ export default function CartPage() {
                             <h3 className="text-lg mt-2">{item.productID}</h3>
                         </div>
                        
-                       <div className="h-full flex flex-row items-center gap-4">
+                       <div className="min-h-full flex flex-row items-center gap-4">
                             <div className="h-full flex flex-col justify-center items-center">
                                 <BiSolidChevronUp 
                                     onClick={() => handleQuantityChange(item, 1)}
@@ -90,7 +106,7 @@ export default function CartPage() {
                     </div>
                 ))
             )}
-            <div className="w-[50%] h-[150px] rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between item-center">
+            <div className="w-full lg:w-[50%] h-[150px] rounded-xl overflow-hidden shadow-2xl my-1 flex justify-between item-center">
                 <Link
                     to="/checkout"
                     className="self-center ml-4 px-6 py-3 bg-secondary text-white rounded hover:bg-secondary/80 transition"
