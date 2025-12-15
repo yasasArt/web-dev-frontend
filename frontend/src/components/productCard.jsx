@@ -5,7 +5,7 @@ export default function ProductCard(props){ //mul akura aniwryen capital wiya yu
     const product = props.product;
 
     return(
-        <div className="w-[300px] h-[400px] shadow-2xl m-4 cursor-pointer relative hover:[&_.buttons]:opacity-100 hover:[&_.primary-image]:opacity-0">
+        <Link to={"/overview/" + product.productID} className="w-[300px] h-[400px] shadow-2xl m-4 cursor-pointer relative hover:[&_.buttons]:opacity-100 hover:[&_.primary-image]:opacity-0">
          <div className="w-full h-[250px] bg-red-900 relative">
             <img
                 src={product.images[1]}
@@ -32,9 +32,9 @@ export default function ProductCard(props){ //mul akura aniwryen capital wiya yu
             </div>
           </div>
           <div className="w-full h-[150px] bottom-0 opacity-0 absolute buttons bg-white flex flex-row gap-4 justify-center items-center transition-opacity duration-300 ">
-            <Link to={"/overview/" + product.productID} className="border-2 border-secondary text-secondary hover:bg-MainText hover:text-white transition-colors duration-150 h-[50px] w-[150px] flex justify-center items-center">View Details</Link>
+            <button  className="border-2 border-secondary text-secondary hover:bg-MainText hover:text-white transition-colors duration-150 h-[50px] w-[150px] flex justify-center items-center">View Details</button>
           </div>
             
-        </div>
+        </Link>
     )
 }

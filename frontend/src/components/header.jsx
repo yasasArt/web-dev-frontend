@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { LuListCollapse } from "react-icons/lu";
 import { useState } from "react";
+import UserData from "./userData";
 
 export default function Header() {
     const [sideBarOpen, setSideBarOpen] = useState(false);
@@ -25,6 +26,9 @@ export default function Header() {
                     <Link className="hover:text-gray-300" to="/about">About</Link>
                     <Link className="hover:text-gray-300" to="/contact">Contact</Link>
                 </nav>
+                <div className="absolute right-24 top-0 h-full items-center hidden lg:flex">
+                    <UserData/>
+                </div>
 
                 {/* Cart */}
                 <Link
@@ -88,6 +92,9 @@ export default function Header() {
                     >
                         Contact
                     </Link>
+                    <div className ="w-full flex justify-center bg-secondary p-2 rounded-full" >
+                        <UserData/>
+                    </div>
                     <Link
                         to="/cart"
                         onClick={() => setSideBarOpen(false)}
