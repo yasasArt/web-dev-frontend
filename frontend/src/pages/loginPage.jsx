@@ -2,12 +2,38 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AiFillGoogleCircle } from "react-icons/ai";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading , setIsLoading] = useState(false);
+  const googleLogin = useGoogleLogin({
+    onSuccess: (response) => {
+      setIsLoading(true);
+      axios.post(import.meta.env.VITE_BACKEND_URL + "/users/google-login", {
+        token: response.access_token,
+      }).then((res) => {
+          localStorage.setItem("token", res.data.token);
+          if(res.data.role == "admin") {
+            navigate("/admin");
+          }else {
+            navigate("/")
+          }
+          toast.success("Login successful!.")
+          setIsLoading(false);
+          
+      }).catch((err)=> {
+        console.log(err);
+      });
+      setIsLoading(false);
+     },
+
+    onError: ()=> {toast.error("Google Login Failed"); },
+    onNonOAuthError: () => {toast.error("Google Login Failed"); },
+  })
 
   const navigate = useNavigate();
 
@@ -96,9 +122,19 @@ const LoginPage = () => {
                 Reset it here
             </Link>
           </p>
-          <button onClick={login} className="w-[400px] h-[50px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary ">
+
+          <button 
+          onClick={login}
+          className="w-[400px] h-[50px] mb-[20px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary ">
             Login
           </button>
+
+          <button 
+          onClick={googleLogin}
+          className="w-[400px] h-[50px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary ">
+            Login with <AiFillGoogleCircle className="inline ml-2 mb-1" />
+          </button>
+
           <p className="text-white not-italic text-center">
             Don't have an account?{" "}
             <Link to="/register" className="text-MainText italic">
