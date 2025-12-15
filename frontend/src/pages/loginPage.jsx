@@ -7,12 +7,15 @@ const LoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading , setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   async function login(){
       console.log("Login button clicked");
       console.log("Email:", email);
       console.log("password:", password);
+      setIsLoading(true);
 
       try {
         
@@ -31,13 +34,14 @@ const LoginPage = () => {
         }
 
         toast.success("Login successful!");
-
+        setIsLoading(false);
       } catch (error) {
 
         toast.error("Login failed. Please check your credentials.");
         
         console.log("Error during login:");
         console.log(error);
+        setIsLoading(false);
       }
   }
 
@@ -103,6 +107,7 @@ const LoginPage = () => {
           </p>
         </div>
       </div>
+      {isLoading && <Loader/>}
     </div>
   );
 };
