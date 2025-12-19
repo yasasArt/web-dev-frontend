@@ -4,6 +4,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { useGoogleLogin } from "@react-oauth/google";
+import Loader from "../components/loader";
+
 
 const LoginPage = () => {
 
