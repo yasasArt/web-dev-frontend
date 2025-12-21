@@ -10,6 +10,7 @@ import AdminUpdateProductPage from './admin/adminUpdateProductPage';
 import AdminOrdersPage from './admin/adminOrders';
 import axios from 'axios';
 import { useEffect } from 'react';
+import AdminUserPage from './admin/adminUserPage';
 
 
 const AdminPage = () => {
@@ -28,7 +29,7 @@ const AdminPage = () => {
       },
 
     }).then((response) => {
-      if(response.data.role == "admin"){ //user admin kenek newai nm home page ekta ywnw.
+      if(response.data.role?.toLowerCase() == "admin"){ //user admin kenek newai nm home page ekta ywnw.
         setUser(response.data);
       }else{
         window.location.href = "/";
@@ -64,7 +65,7 @@ const AdminPage = () => {
               <Route path='/products' element={<AdminProductsPage/>} />
               <Route path='/add-product' element={<AdminAddProductPage/>} />
               <Route path='/update-product' element={<AdminUpdateProductPage/>} />
-              <Route path='/users' element={<h1>users</h1>} />
+              <Route path='/users' element={<AdminUserPage/>} />
               <Route path='/reviews' element={<h1>Reviews</h1>} />
          </Routes>
       </div>
