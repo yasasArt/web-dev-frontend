@@ -5,6 +5,7 @@ import ProductPage from './productPage'
 import ProductOverview from './productOverview'
 import CartPage from './cart'
 import CheckoutPage from './checkOut'
+import OrdersPage from './odersPage'
 
 
 
@@ -21,6 +22,7 @@ const HomePage = () => {
                 <Route path='/overview/:productID' element={<ProductOverview/>} />
                 <Route path='/cart' element={<CartPage/>} />
                 <Route path='/checkout' element={<CheckoutPage/>} />
+                <Route path='/orders' element={<OrdersPage/>}/>
                 <Route path='/*' element={<h1>Not found</h1>}/>
           </Routes>
         </div>

@@ -6,134 +6,113 @@ import { AiFillGoogleCircle } from "react-icons/ai";
 import { useGoogleLogin } from "@react-oauth/google";
 import Loader from "../components/loader";
 
-
 const LoginPage = () => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading , setIsLoading] = useState(false);
-  const googleLogin = useGoogleLogin({
-    onSuccess: (response) => {
-      setIsLoading(true);
-      axios.post(import.meta.env.VITE_BACKEND_URL + "/users/google-login", {
-        token: response.access_token,
-      }).then((res) => {
-          localStorage.setItem("token", res.data.token);
-          if(res.data.role == "admin") {
-            navigate("/admin");
-          }else {
-            navigate("/")
-          }
-          toast.success("Login successful!.")
-          setIsLoading(false);
-          
-      }).catch((err)=> {
-        console.log(err);
-      });
-      setIsLoading(false);
-     },
-
-    onError: ()=> {toast.error("Google Login Failed"); },
-    onNonOAuthError: () => {toast.error("Google Login Failed"); },
-  })
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function login(){
-      console.log("Login button clicked");
-      console.log("Email:", email);
-      console.log("password:", password);
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
       setIsLoading(true);
-
       try {
-        
-        const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/login", {
-          email: email,
-          password: password,
-        })
-        console.log(res);
-
+        const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/google-login", {
+          token: response.access_token,
+        });
         localStorage.setItem("token", res.data.token);
 
-        if(res.data.role == "Admin"){
-          navigate("/admin");
-        }else{
-          navigate("/");
-        }
+        // Normalize role to lowercase
+        const role = res.data.role?.toLowerCase();
+        if (role === "admin") navigate("/admin");
+        else navigate("/");
 
         toast.success("Login successful!");
-        setIsLoading(false);
-      } catch (error) {
-
-        toast.error("Login failed. Please check your credentials.");
-        
-        console.log("Error during login:");
-        console.log(error);
+      } catch (err) {
+        console.log(err);
+        toast.error("Google Login Failed");
+      } finally {
         setIsLoading(false);
       }
+    },
+    onError: () => toast.error("Google Login Failed"),
+    onNonOAuthError: () => toast.error("Google Login Failed"),
+  });
+
+  async function login() {
+    console.log("Login button clicked", email, password);
+    setIsLoading(true);
+
+    try {
+      const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/login", {
+        email,
+        password,
+      });
+
+      localStorage.setItem("token", res.data.token);
+
+      // Normalize role to lowercase
+      const role = res.data.role?.toLowerCase();
+      if (role === "admin") navigate("/admin");
+      else navigate("/");
+
+      toast.success("Login successful!");
+    } catch (error) {
+      console.log("Error during login:", error);
+      toast.error("Login failed. Please check your credentials.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
     <div className="w-full h-screen bg-[url('/Bg.jpg')] bg-center bg-cover bg-no-repeat flex">
+      {/* Left side */}
       <div className="w-[50%] h-full flex justify-center items-center flex-col p-[50px]">
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="w-[150px] h-[150px] mb-[20px] object-cover"
-        />
-
+        <img src="/logo.png" alt="Logo" className="w-[150px] h-[150px] mb-[20px] object-cover" />
         <h1 className="text-[50px] text-MainText text-shadow-secondary text-shadow-2xs text-center font-bold">
           Pug In. Power Up. Play Hard.
         </h1>
-
         <p className="text-[20px] text-secondary mt-[20px] mb-[40px] italic text-center">
-          Join the ultimate gaming community. Log in to access exclusive
-          features.
+          Join the ultimate gaming community. Log in to access exclusive features.
         </p>
       </div>
 
+      {/* Right side */}
       <div className="w-[50%] h-full flex justify-center items-center">
-        <div className="w-[450px] h-[600px] backdrop-blur-2xl shadow-2xl rounded-2xl flex flex-col justify-center items-center ">
-          <h1 className="text-[40px] font-bold mb-[20px] text-white text-shadow-white">
-            {" "}
-            Login
-          </h1>
+        <div className="w-[450px] h-[600px] backdrop-blur-2xl shadow-2xl rounded-2xl flex flex-col justify-center items-center">
+          <h1 className="text-[40px] font-bold mb-[20px] text-white text-shadow-white">Login</h1>
           <input
-            onChange={
-              (e) =>{
-                setEmail(e.target.value)
-              }}
-
             type="email"
             placeholder="your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-[400px] h-[50px] mb-[20px] rounded-lg border border-secondary p-[10px] text-[20px] focus:outline-none focus:ring-2 focus:ring-MainText"
           />
           <input
-            onChange={
-              (e) =>{
-                setPassword(e.target.value)
-              }}
-
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-[400px] h-[50px] mb-[20px] rounded-lg border border-secondary p-[10px] text-[20px] focus:outline-none focus:ring-2 focus:ring-MainText"
           />
           <p className="text-white not-italic w-full mb-[20px] text-center">
-            Forget your Password?
+            Forget your Password?{" "}
             <Link to="forgot-password" className="text-MainText italic">
-                Reset it here
+              Reset it here
             </Link>
           </p>
 
-          <button 
-          onClick={login}
-          className="w-[400px] h-[50px] mb-[20px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary ">
+          <button
+            onClick={login}
+            className="w-[400px] h-[50px] mb-[20px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary"
+          >
             Login
           </button>
 
-          <button 
-          onClick={googleLogin}
-          className="w-[400px] h-[50px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary ">
+          <button
+            onClick={googleLogin}
+            className="w-[400px] h-[50px] bg-MainText text-white font-bold text-[20px] rounded-lg border-[2px] border-secondary hover:bg-transparent hover:text-secondary"
+          >
             Login with <AiFillGoogleCircle className="inline ml-2 mb-1" />
           </button>
 
@@ -145,7 +124,8 @@ const LoginPage = () => {
           </p>
         </div>
       </div>
-      {isLoading && <Loader/>}
+
+      {isLoading && <Loader />}
     </div>
   );
 };

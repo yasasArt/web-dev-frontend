@@ -3,21 +3,25 @@ import { Link } from 'react-router-dom';
 import { BiPlus } from "react-icons/bi";
 import axios from "axios";
 import Loader from '../../components/loader';
-import ProductDeleteButton from '../../components/ProductDeleteButton';
 
 
-const AdminProductsPage = () => {
 
-  const [products, setProducts] = useState([]);
+const AdminUserPage = () => {
+
+  const [users, setUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!loaded) {
     axios
-      .get(import.meta.env.VITE_BACKEND_URL + '/products')
+      .get(import.meta.env.VITE_BACKEND_URL + '/users/all' , {
+        headers : {
+            Authorization: "Bearer" + localStorage.getItem("token"),
+        }})
+
       .then((response) => {
         console.log(response.data);
-        setProducts(response.data);
+        setUsers(response.data);
         setLoaded(true);
       })
       .catch((error) => {
@@ -41,20 +45,17 @@ const AdminProductsPage = () => {
             <thead className="bg-accent text-secondary sticky top-0 shadow">
               <tr>
                 <th className="p-4 text-left">Image</th>
-                <th className="p-4 text-left">Product ID</th>
-                <th className="p-4 text-left">Name</th>
-                <th className="p-4 text-left">Price</th>
-                <th className="p-4 text-left">Labelled Price</th>
-                <th className="p-4 text-left">Category</th>
-                <th className="p-4 text-left">Brand</th>
-                <th className="p-4 text-left">Stock</th>
-                <th className="p-4 text-left">Availability</th>
+                <th className="p-4 text-left">Email</th>
+                <th className="p-4 text-left">First Name</th>
+                <th className="p-4 text-left">Last Name</th>
+                <th className="p-4 text-left">Role</th>
+                <th className="p-4 text-left">status</th>
                 <th className="p-4 text-left">Action</th>
               </tr>
             </thead>
 
             <tbody>
-              {products.map((item, index) => {
+              {users.map((item, index) => {
                 return (
                   <tr
                     key={index}
@@ -62,24 +63,23 @@ const AdminProductsPage = () => {
                   >
                     <td className="p-4">
                       <img
-                        src={item.images[0]}
+                        src={item.images}
                         className="w-[40px] h-[40px] rounded-md shadow-sm object-cover"
                       />
                     </td>
-                    <td className="p-4">{item.productID}</td>
-                    <td className="p-4 font-medium text-MainText">{item.name}</td>
-                    <td className="p-4">Rs {item.price}</td>
-                    <td className="p-4">Rs {item.labelledPrice}</td>
-                    <td className="p-4">{item.category}</td>
-                    <td className="p-4">{item.brand}</td>
-                    <td className="p-4">{item.stock}</td>
-                    <td
+                    <td className="p-4">{item.email}</td>
+                    <td className="p-4 font-medium text-MainText">{item.firstName}</td>
+                    <td className="p-4">Rs {item.lastName}</td>
+                    <td className="p-4">Rs {item.role}</td>
+                    <td className="p-4">{item.status}</td>
+                    <td className="p-4">{item.Action}</td>
+                    {/* <td
                       className={`p-4 font-semibold ${
                         item.isAvailable ? "text-green-600" : "text-red-600"
                       }`}
                     >
                       {item.isAvailable ? "In Stock" : "Out of Stock"}
-                    </td>
+                    </td> */}
                     <td className='"p-4 text-left"'>
                       <div className='inline-flex items-center gap-2 '>
                         <Link
@@ -116,4 +116,4 @@ const AdminProductsPage = () => {
   );
 };
 
-export default AdminProductsPage;
+export default AdminUserPage;
