@@ -6,7 +6,7 @@ import Loader from '../../components/loader';
 
 
 
-const AdminUserPage = () => {
+const adminUserPage = () => {
 
   const [users, setUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -14,14 +14,14 @@ const AdminUserPage = () => {
   useEffect(() => {
     if (!loaded) {
     axios
-      .get(import.meta.env.VITE_BACKEND_URL + '/users/all' , {
-        headers : {
-            Authorization: "Bearer" + localStorage.getItem("token"),
-        }})
-
+      .get(import.meta.env.VITE_BACKEND_URL + '/users/all',{
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("token"),
+        },
+      })
       .then((response) => {
         console.log(response.data);
-        setUsers(response.data);
+        setProducts(response.data);
         setLoaded(true);
       })
       .catch((error) => {
@@ -55,7 +55,7 @@ const AdminUserPage = () => {
             </thead>
 
             <tbody>
-              {users.map((item, index) => {
+              {products.map((item, index) => {
                 return (
                   <tr
                     key={index}
@@ -63,33 +63,15 @@ const AdminUserPage = () => {
                   >
                     <td className="p-4">
                       <img
-                        src={item.images}
+                        src={item.image}
                         className="w-[40px] h-[40px] rounded-md shadow-sm object-cover"
                       />
                     </td>
-                    <td className="p-4">{item.email}</td>
+                    <td className="p-4">{item.image}</td>
                     <td className="p-4 font-medium text-MainText">{item.firstName}</td>
                     <td className="p-4">Rs {item.lastName}</td>
                     <td className="p-4">Rs {item.role}</td>
-                    <td className="p-4">{item.status}</td>
-                    <td className="p-4">{item.Action}</td>
-                    {/* <td
-                      className={`p-4 font-semibold ${
-                        item.isAvailable ? "text-green-600" : "text-red-600"
-                      }`}
-                    >
-                      {item.isAvailable ? "In Stock" : "Out of Stock"}
-                    </td> */}
-                    <td className='"p-4 text-left"'>
-                      <div className='inline-flex items-center gap-2 '>
-                        <Link
-                          to="/admin/update-product"
-                          className='px-3 py-2 rounded-md w-[70px] text-center bg-secondary/20 text-secondary'
-                          state={item}
-                          >Edit</Link>
-                      <ProductDeleteButton productID = {item.productID} reload={()=>{setLoaded(false)}}/>
-                      </div>
-                    </td>
+                    
                   </tr>
                 );
               })}
@@ -116,4 +98,6 @@ const AdminUserPage = () => {
   );
 };
 
-export default AdminUserPage;
+export default adminUserPage;
+
+
