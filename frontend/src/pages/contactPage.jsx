@@ -8,7 +8,7 @@ const ContactPage = () => {
       {/* HERO BANNER */}
       <section className="relative w-full h-[50vh] flex items-center">
         <img
-          src="/homePageBanner.png"
+          src="/contact.png"
           alt="Contact NextCore"
           className="absolute inset-0 w-full h-full object-cover"
         />
