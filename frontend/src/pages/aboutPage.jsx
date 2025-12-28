@@ -8,7 +8,7 @@ const AboutPage = () => {
       {/* HERO SECTION */}
       <section className="relative w-full h-[50vh] flex items-center">
         <img
-          src="/homePageBanner.png"
+          src="/about.png"
           alt="About NextCore"
           className="absolute inset-0 w-full h-full object-cover"
         />
