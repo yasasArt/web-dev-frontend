@@ -3,25 +3,6 @@ import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const ContactPage = () => {
 
-    const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const res = await axios.post(
-      import.meta.env.VITE_BACKEND_URL + "/contact",
-      {
-        name,
-        email,
-        message
-      }
-    );
-
-    alert(res.data.message);
-  } catch (err) {
-    alert("Failed to send message");
-  }
-};
-
   return (
     <div className="w-full bg-primary text-secondary">
 
