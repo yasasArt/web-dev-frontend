@@ -1,7 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const ContactPage = () => {
+
+ const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  message: ""
+});
+
+const [loading, setLoading] = useState(false);
+const [success, setSuccess] = useState("");
+const [error, setError] = useState("");
+
+// handle input change
+const handleChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value
+  });
+};
+
+// handle submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/contact/send`,
+      formData
+    );
+
+    toast.success(res.data.message || "Message sent successfully 🚀");
+
+    setFormData({ name: "", email: "", message: "" });
+
+  } catch (err) {
+    console.error(err);
+
+    toast.error(
+      err.response?.data?.message || "Failed to send message ❌"
+    );
+
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   return (
     <div className="w-full bg-primary text-secondary">
@@ -30,9 +79,7 @@ const ContactPage = () => {
 
         {/* CONTACT INFO */}
         <div>
-          <h2 className="text-3xl font-bold mb-6">
-            Get in Touch
-          </h2>
+          <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
 
           <p className="text-gray-600 mb-8">
             Reach out to us for product inquiries, custom PC builds,
@@ -63,37 +110,58 @@ const ContactPage = () => {
             Send Us a Message
           </h3>
 
-          <form className="space-y-4">
+          {/* SUCCESS / ERROR */}
+          {success && (
+            <p className="mb-4 text-green-600 font-medium">{success}</p>
+          )}
+          {error && (
+            <p className="mb-4 text-red-600 font-medium">{error}</p>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Your Name"
+              required
               className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-MainText"
             />
 
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Your Email"
+              required
               className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-MainText"
             />
 
             <textarea
               rows="4"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               placeholder="Your Message"
+              required
               className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-MainText"
             ></textarea>
 
             <button
               type="submit"
-              className="w-full bg-MainText text-white py-3 rounded-lg font-semibold hover:opacity-90 transition"
+              disabled={loading}
+              className="w-full bg-MainText text-white py-3 rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-60"
             >
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </button>
           </form>
         </div>
 
       </section>
 
-      {/* MAP (OPTIONAL) */}
+      {/* MAP */}
       <section className="w-full h-[400px]">
         <iframe
           title="NextCore Location"
