@@ -11,7 +11,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import ForgetPasswordPage from './pages/forgetPasswordPage.jsx'
 
 
-// 491094543732-m8sb4v5r6bq6sgcg6qc2fuijsbtqf2l7.apps.googleusercontent.com
+
 
 function App() {
  

@@ -225,10 +225,10 @@ const AdminAddProductPage = () => {
                             className='w-full h-[50px] rounded-2xl focus:outline-none focus:ring-2 focus:ring-secondary border border-secondary shadow-2xl px-[20px]'
                         >
                             <option value="">Select Category</option>
-                            <option value="cpu">CPU</option>
-                            <option value="gpu">GPU</option>
+                            <option value="cpu">laptop</option>
+                            <option value="gpu">ear buds</option>
                             <option value="motherboard">Motherboard</option>
-                            <option value="ram">RAM</option>
+                            <option value="ram">head sets</option>
                             <option value="storage">Storage</option>
                             <option value="power supply">Power Supply</option>
                             <option value="cabinet">Cabinet</option>

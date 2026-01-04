@@ -11,6 +11,7 @@ import AdminOrdersPage from './admin/adminOrders';
 import axios from 'axios';
 import { useEffect } from 'react';
 import AdminUserPage from './admin/adminUserPage';
+import AdminReview from './admin/adminReview';
 
 
 const AdminPage = () => {
@@ -66,7 +67,7 @@ const AdminPage = () => {
               <Route path='/add-product' element={<AdminAddProductPage/>} />
               <Route path='/update-product' element={<AdminUpdateProductPage/>} />
               <Route path='/users' element={<AdminUserPage/>} />
-              <Route path='/reviews' element={<h1>Reviews</h1>} />
+              <Route path='/reviews' element={<AdminReview />} />
          </Routes>
       </div>
       </>  
