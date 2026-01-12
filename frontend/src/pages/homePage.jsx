@@ -9,6 +9,7 @@ import OrdersPage from './ordersPage'
 import HomeContent from './homeContent'
 import AboutPage from './aboutPage'
 import ContactPage from './contactPage'
+import CustomerReview from './CustomerReview'
 
 const HomePage = () => {
   return (
@@ -25,6 +26,7 @@ const HomePage = () => {
           <Route path='/cart' element={<CartPage/>} />
           <Route path='/checkout' element={<CheckoutPage/>} />
           <Route path='/orders' element={<OrdersPage/>}/>
+          <Route path='/reviews' element={<CustomerReview/>}/>
           <Route path='/*' element={<h1>Not found</h1>}/>
         </Routes>
       </div>
