@@ -25,6 +25,7 @@ export default function Header() {
                     <Link className="hover:text-gray-300" to="/products">Products</Link>
                     <Link className="hover:text-gray-300" to="/about">About</Link>
                     <Link className="hover:text-gray-300" to="/contact">Contact</Link>
+                    <Link className="hover:text-gray-300" to="/reviews">Reviews</Link>
                 </nav>
                 <div className="absolute right-24 top-0 h-full items-center hidden lg:flex">
                     <UserData/>
