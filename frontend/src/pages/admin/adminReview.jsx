@@ -1,101 +1,105 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { FaStar, FaCheck, FaTimes } from "react-icons/fa";
+import toast from "react-hot-toast";
 
-const AdminReview = () => {
+const AdminReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchReviews();
-  }, []);
-
   const fetchReviews = async () => {
     try {
-      const token = localStorage.getItem("token");
-
       const res = await axios.get(
-        import.meta.env.VITE_BACKEND_URL + "/reviews/all",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${import.meta.env.VITE_BACKEND_URL}/reviews`
       );
-
       setReviews(res.data);
-    } catch (error) {
-      console.error("Error loading reviews", error);
+    } catch (err) {
+      toast.error("Failed to load reviews");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
   const updateStatus = async (id, status) => {
     try {
-      const token = localStorage.getItem("token");
-
       await axios.put(
-        import.meta.env.VITE_BACKEND_URL + `/reviews/update/${id}`,
-        { status },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${import.meta.env.VITE_BACKEND_URL}/reviews/${id}/status`,
+        { status }
       );
-
+      toast.success(`Review ${status}`);
       fetchReviews();
-    } catch (error) {
-      console.error("Status update failed", error);
+    } catch (err) {
+      toast.error("Failed to update status");
     }
   };
 
-  const renderStars = (rating) =>
-    [...Array(5)].map((_, i) => (
-      <FaStar
-        key={i}
-        className={i < rating ? "text-yellow-400" : "text-gray-300"}
-      />
-    ));
+  const deleteReview = async (id) => {
+    if (!confirm("Are you sure you want to delete this review?")) return;
+
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/reviews/${id}`
+      );
+      toast.success("Review deleted");
+      fetchReviews();
+    } catch (err) {
+      toast.error("Failed to delete review");
+    }
+  };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64 text-gray-500">
+      <div className="flex justify-center items-center h-screen text-lg">
         Loading reviews...
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Admin – Customer Reviews</h1>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Admin – Customer Reviews
+      </h1>
 
-      <div className="overflow-x-auto bg-white shadow rounded-lg">
+      <div className="overflow-x-auto bg-white rounded-xl shadow">
         <table className="w-full text-sm">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-200">
             <tr>
-              <th className="px-4 py-3">User</th>
-              <th className="px-4 py-3">Product</th>
-              <th className="px-4 py-3">Rating</th>
-              <th className="px-4 py-3">Comment</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3 text-center">Actions</th>
+              <th className="p-3 text-left">Name</th>
+              <th className="p-3 text-left">Product ID</th>
+              <th className="p-3 text-left">Rating</th>
+              <th className="p-3 text-left">Comment</th>
+              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-center">Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            {reviews.map((review) => (
-              <tr key={review._id} className="border-t">
-                <td className="px-4 py-3">{review.user?.name}</td>
-                <td className="px-4 py-3">{review.product?.name}</td>
-                <td className="px-4 py-3 flex gap-1">
-                  {renderStars(review.rating)}
+            {reviews.length === 0 && (
+              <tr>
+                <td colSpan="6" className="text-center p-6 text-gray-500">
+                  No reviews found
                 </td>
-                <td className="px-4 py-3 max-w-xs truncate">
+              </tr>
+            )}
+
+            {reviews.map((review) => (
+              <tr
+                key={review._id}
+                className="border-b hover:bg-gray-50"
+              >
+                <td className="p-3">{review.name}</td>
+                <td className="p-3">{review.productID}</td>
+                <td className="p-3">⭐ {review.rating}</td>
+                <td className="p-3 max-w-xs truncate">
                   {review.comment}
                 </td>
-                <td className="px-4 py-3">
+
+                <td className="p-3">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold
                       ${
@@ -104,45 +108,45 @@ const AdminReview = () => {
                           : review.status === "rejected"
                           ? "bg-red-100 text-red-700"
                           : "bg-yellow-100 text-yellow-700"
-                      }
-                    `}
+                      }`}
                   >
-                    {review.status}
+                    {review.status || "pending"}
                   </span>
                 </td>
-                <td className="px-4 py-3">
-                  <div className="flex justify-center gap-2">
-                    <button
-                      onClick={() =>
-                        updateStatus(review._id, "approved")
-                      }
-                      className="bg-green-500 p-2 text-white rounded hover:bg-green-600"
-                    >
-                      <FaCheck />
-                    </button>
-                    <button
-                      onClick={() =>
-                        updateStatus(review._id, "rejected")
-                      }
-                      className="bg-red-500 p-2 text-white rounded hover:bg-red-600"
-                    >
-                      <FaTimes />
-                    </button>
-                  </div>
+
+                <td className="p-3 text-center space-x-2">
+                  <button
+                    onClick={() =>
+                      updateStatus(review._id, "approved")
+                    }
+                    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                  >
+                    Approve
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      updateStatus(review._id, "rejected")
+                    }
+                    className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                  >
+                    Reject
+                  </button>
+
+                  <button
+                    onClick={() => deleteReview(review._id)}
+                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        {reviews.length === 0 && (
-          <p className="text-center text-gray-500 py-6">
-            No reviews available
-          </p>
-        )}
       </div>
     </div>
   );
 };
 
-export default AdminReview;
+export default AdminReviews;
