@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
 import HomePage from './pages/homePage';
-import RegisterPage from './pages/registerPage';
 import AdminPage from './pages/adminPage';
 import TestPage from './pages/test.jsx';
 import ForgetPasswordPage from './pages/forgetPasswordPage.jsx';
 import { Toaster } from 'react-hot-toast';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoginPage from './pages/loginpage.jsx';
+import RegisterPage from './pages/registerpage.jsx';
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children }) => {

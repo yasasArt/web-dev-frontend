@@ -75,14 +75,14 @@ const RegisterPage = () => {
         <img
           src="/logo.png"
           alt="Logo"
-          className="w-[150px] h-[150px] mb-[20px] object-cover"
+          className="w-[300px] h-[300px] mb-[20px] object-cover"
         />
 
-        <h1 className="text-[50px] text-MainText text-shadow-secondary text-shadow-2xs text-center font-bold">
+        <h1 className="text-[50px] text-white text-shadow-secondary text-shadow-2xs text-center font-bold">
           Pug In. Power Up. Play Hard.
         </h1>
 
-        <p className="text-[20px] text-secondary mt-[20px] mb-[40px] italic text-center">
+        <p className="text-[20px] text-white mt-[20px] mb-[40px] italic text-center">
           Join the ultimate gaming community. Log in to access exclusive
           features.
         </p>
@@ -150,7 +150,7 @@ const RegisterPage = () => {
           </button>
           <p className="text-white not-italic text-center">
            Already have an account?{" "}
-            <Link to="/register" className="text-MainText italic">
+            <Link to="/login" className="text-MainText italic">
               Login here
             </Link>
           </p>
