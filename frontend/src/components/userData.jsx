@@ -34,7 +34,7 @@ export default function UserData(){
                     (e)=>{
                         if(e.target.value == "logout"){
                             localStorage.removeItem("token");
-                            window.location.href = "/login px-4 py-2 bg-whitw text-secondary";
+                            window.location.href = "/login px-4 py-2 bg-white text-secondary";
                         }else if(e.target.value == "my-orders"){
                             window.location.href = "/orders";
                         }
