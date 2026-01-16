@@ -2,6 +2,7 @@ import Loader from "../components/loader";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/productCard";
+import { FaSearch } from "react-icons/fa";
 
 export default function ProductPage() {
 
@@ -29,8 +30,7 @@ export default function ProductPage() {
                 setProducts(res.data);
             } else {
                 const res = await axios.get(
-                    import.meta.env.VITE_BACKEND_URL +
-                    "/products/search/" + value
+                    import.meta.env.VITE_BACKEND_URL + "/products/search/" + value
                 );
                 setProducts(res.data);
             }
@@ -40,32 +40,58 @@ export default function ProductPage() {
     };
 
     return (
-        <div className="w-full h-[calc(100vh-100px)]">
+        <div className="w-full min-h-screen bg-gray-50">
+
+            {/* HERO SECTION */}
+            <div className="relative w-full h-120">
+                <img
+                    src="/products.jpg"
+                    alt="Product Banner"
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white">
+                    <h1 className="text-4xl font-bold mb-2">Explore Our Products</h1>
+                    <p className="text-lg opacity-90">
+                        Quality products at the best prices
+                    </p>
+                </div>
+            </div>
 
             {!loaded ? <Loader /> : (
-                <div className="w-full flex justify-center p-4 flex-row flex-wrap pt-[100px]">
+                <div className="max-w-7xl mx-auto px-4 py-10">
 
                     {/* SEARCH BAR */}
-                    <div className="w-full h-[100px] sticky top-0 bg-white flex justify-center items-center mb-4 shadow-md z-10">
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            className="w-1/2 px-4 py-2 border border-secondary rounded-lg outline-none"
-                            onChange={(e) => handleSearch(e.target.value)}
-                        />
+                    <div className="sticky top-0 z-20 bg-gray-50 py-4 mb-8">
+                        <div className="relative max-w-xl mx-auto">
+                            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search products by name..."
+                                className="w-full pl-12 pr-4 py-3 rounded-full border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none shadow-sm"
+                                onChange={(e) => handleSearch(e.target.value)}
+                            />
+                        </div>
                     </div>
 
                     {/* PRODUCT LIST */}
                     {products.length === 0 ? (
-                        <p className="text-gray-500">No products found</p>
+                        <div className="text-center text-gray-500 mt-20">
+                            <p className="text-lg font-medium">No products found 😔</p>
+                            <p className="text-sm mt-2">
+                                Try searching with a different keyword
+                            </p>
+                        </div>
                     ) : (
-                        products.map((item) => (
-                            <ProductCard
-                                key={item._id}
-                                product={item}
-                            />
-                        ))
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                            {products.map((item) => (
+                                <ProductCard
+                                    key={item._id}
+                                    product={item}
+                                />
+                            ))}
+                        </div>
                     )}
+
                 </div>
             )}
         </div>
