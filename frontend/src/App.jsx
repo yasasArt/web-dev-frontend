@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/homePage'
@@ -8,7 +7,6 @@ import TestPage from './pages/test.jsx'
 import { Toaster } from 'react-hot-toast'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ForgetPasswordPage from './pages/forgetPasswordPage.jsx'
-import LoginPage from './pages/loginpage.jsx'
 
 
 
