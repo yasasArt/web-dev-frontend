@@ -7,7 +7,7 @@ import TestPage from './pages/test.jsx'
 import { Toaster } from 'react-hot-toast'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ForgetPasswordPage from './pages/forgetPasswordPage.jsx'
-
+import LoginPage from './pages/loginpage.jsx'
 
 
 
