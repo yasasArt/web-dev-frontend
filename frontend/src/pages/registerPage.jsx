@@ -150,7 +150,7 @@ const RegisterPage = () => {
           </button>
           <p className="text-white not-italic text-center">
            Already have an account?{" "}
-            <Link to="/login" className="text-MainText italic">
+            <Link to="/login" className="text-blue-800 italic">
               Login here
             </Link>
           </p>

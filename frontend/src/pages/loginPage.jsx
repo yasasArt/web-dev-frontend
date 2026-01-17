@@ -68,11 +68,11 @@ const LoginPage = () => {
     <div className="w-full h-screen bg-[url('/Bg.jpg')] bg-center bg-cover bg-no-repeat flex">
       {/* Left side */}
       <div className="w-[50%] h-full flex justify-center items-center flex-col p-[50px]">
-        <img src="/logo.png" alt="Logo" className="w-[150px] h-[150px] mb-[20px] object-cover" />
-        <h1 className="text-[50px] text-MainText text-shadow-secondary text-shadow-2xs text-center font-bold">
+        <img src="/logo.png" alt="Logo" className="w-[300px] h-[300px] mb-[20px] object-cover" />
+        <h1 className="text-[50px] text-white text-shadow-secondary text-shadow-2xs text-center font-bold">
           Pug In. Power Up. Play Hard.
         </h1>
-        <p className="text-[20px] text-secondary mt-[20px] mb-[40px] italic text-center">
+        <p className="text-[20px] text-white mt-[20px] mb-[40px] italic text-center">
           Join the ultimate gaming community. Log in to access exclusive features.
         </p>
       </div>
@@ -97,7 +97,7 @@ const LoginPage = () => {
           />
           <p className="text-white not-italic w-full mb-[20px] text-center">
             Forget your Password?{" "}
-            <Link to="forgot-password" className="text-MainText italic">
+            <Link to="forgot-password" className="text-blue-800 italic">
               Reset it here
             </Link>
           </p>
@@ -118,7 +118,7 @@ const LoginPage = () => {
 
           <p className="text-white not-italic text-center">
             Don't have an account?{" "}
-            <Link to="/register" className="text-MainText italic">
+            <Link to="/register" className="text-blue-800 italic">
               Register here
             </Link>
           </p>
