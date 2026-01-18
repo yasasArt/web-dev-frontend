@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function UserData(){
     const [user, setUser] = useState(null);
+    const [selectedOption, setSelectedOption] = useState("user");
+    const navigate = useNavigate();
+
     useEffect(()=>{
         const token = localStorage.getItem("token");
         if(token != null){
@@ -13,13 +16,16 @@ export default function UserData(){
                 },
             }).then((response)=>{
                 setUser(response.data);
-            }).catch(()=> {
+            }).catch((error)=> {
+                if(error.response?.status === 401){
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                }
                 setUser(null);
             })
         }
-    },[])
+    },[navigate])
 
-        const [selectedOption, setSelectedOption] = useState("user")
     return (
         <>
         {
@@ -34,9 +40,9 @@ export default function UserData(){
                     (e)=>{
                         if(e.target.value == "logout"){
                             localStorage.removeItem("token");
-                            window.location.href = "/login px-4 py-2 bg-white text-secondary";
+                            navigate("/login");
                         }else if(e.target.value == "my-orders"){
-                            window.location.href = "/orders";
+                            navigate("/orders");
                         }
                         setSelectedOption("user")
                     }
@@ -53,6 +59,6 @@ export default function UserData(){
                 <Link to="/register" className="mx-2 px-4 py-2 bg-white text-secondary rounded-full">Register</Link>
             </div>
         }
-e    </>
+        </>
     ) 
 }
