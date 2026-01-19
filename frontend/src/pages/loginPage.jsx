@@ -36,6 +36,7 @@ const LoginPage = () => {
     },
     onError: () => toast.error("Google Login Failed"),
     onNonOAuthError: () => toast.error("Google Login Failed"),
+    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
   });
 
   
