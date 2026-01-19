@@ -90,7 +90,7 @@ const RegisterPage = () => {
 
       <div className="w-[50%] h-full flex justify-center items-center">
         <div className="w-[450px] h-[600px] backdrop-blur-2xl shadow-2xl rounded-2xl flex flex-col justify-center items-center ">
-          <h1 className="text-[20px] font-semibold mb-[20px] text-white text-shadow-white">
+          <h1 className="text-[40px] font-semibold mb-[20px] text-white text-shadow-white">
             {" "}
             Register
           </h1>

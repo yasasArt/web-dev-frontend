@@ -38,6 +38,9 @@ const LoginPage = () => {
     onNonOAuthError: () => toast.error("Google Login Failed"),
   });
 
+  
+
+
   async function login() {
     console.log("Login button clicked", email, password);
     setIsLoading(true);
